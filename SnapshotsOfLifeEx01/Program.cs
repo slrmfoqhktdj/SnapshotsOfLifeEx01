@@ -44,6 +44,14 @@ namespace SnapshotsOfLifeEx01
         static void Main()
         {
 
+            // 중복실행 체크
+            if (IsRunningCheck())
+            {
+                MessageBox.Show("이미 프로그램이 실행 중 입니다.");
+                return;
+            }
+
+
             // Initialization of SDK
             uint err = EDSDKLib.EDSDK.EdsInitializeSDK();
 
@@ -177,8 +185,26 @@ namespace SnapshotsOfLifeEx01
             Application.Run(new MainWindow());*/
         }
 
+        // 중복 프로그램 실행 방지
+        public static bool IsRunningCheck()
+        {
+            System.Diagnostics.Process[] processes = null;
+            string strCurrentProcess = System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToUpper();
+            processes = System.Diagnostics.Process.GetProcessesByName(strCurrentProcess);
 
-        public static void WindowStartSet()
+            if (processes.Length > 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        // 레지스토리에 시작프로그램으로 등록 - 안됨
+        /*public static void WindowStartSet()
         {
             using (RegistryKey rk = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run",true))
             {
@@ -219,6 +245,6 @@ namespace SnapshotsOfLifeEx01
                 }
             }
 
-        }
+        }*/
     }
 }

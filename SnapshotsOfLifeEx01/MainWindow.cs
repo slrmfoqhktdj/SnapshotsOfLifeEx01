@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 
 
 namespace SnapshotsOfLifeEx01
@@ -39,9 +40,10 @@ namespace SnapshotsOfLifeEx01
                                             Image.FromFile("./ui/flash06.png") ,Image.FromFile("./ui/flash07.png") ,Image.FromFile("./ui/flash08.png") ,Image.FromFile("./ui/flash09.png") ,};
         private int flash_pictures_count = 0;
 
-        private Image picture_animation;
+       /* private Image picture_animation;*/
 
-
+        private long maxSizeByte = 1024 * 1024 * 500; // 최고 용량 (500MB)
+        private int deleteFilesCount = 9;   // 용량 초과시 지울 파일 개수
 
 
 
@@ -139,6 +141,7 @@ namespace SnapshotsOfLifeEx01
 
             /* evfPictureBox1.Image = Properties.Resources.intro;*/
 
+            // 사진 저장 폴더 생성
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
@@ -209,6 +212,10 @@ namespace SnapshotsOfLifeEx01
             }*/
 
 
+
+
+
+
         }
 
       
@@ -238,6 +245,8 @@ namespace SnapshotsOfLifeEx01
         private void startButton_Click(object sender, EventArgs e)
         {
 
+            PicturesDelete();
+
             panel1.BackgroundImage = bg;
             actionButton5.Visible = false;
             actionButton5.Enabled = false;
@@ -250,8 +259,6 @@ namespace SnapshotsOfLifeEx01
             ImageAnimator.Animate(picture_animation, this.OnFrameChangedHandler);
 
             s_t.Start();*/
-
-
 
         }
 
@@ -585,6 +592,39 @@ namespace SnapshotsOfLifeEx01
 
             }
 
+        }
+
+        private void PicturesDelete()
+        {
+            List<FileInfo> files = Directory.GetFiles(folderPath)
+            .Select(f => new FileInfo(f))
+            .OrderBy(f => f.CreationTime) // 생성일 기준으로 정렬
+            .ToList();
+
+            long currentSize = files.Sum(f => f.Length);
+
+            Console.WriteLine("lenght = " + currentSize);
+
+            if (currentSize < maxSizeByte)
+            {
+                return;
+            }
+
+
+            for (int i = 0; i < deleteFilesCount; i++)
+            {
+                FileInfo oldestFile = files.First();
+                files.RemoveAt(0);
+
+                try
+                {
+                    File.Delete(oldestFile.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("파일 삭제 오류 발생 : " + ex.Message);
+                }
+            }
         }
 
         
