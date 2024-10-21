@@ -227,19 +227,7 @@ namespace SnapshotsOfLifeEx01
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _controller.EndEvf();
-            evfPictureBox1.Visible = false;
-
-            actionButton5.Visible = true;
-            actionButton5.Enabled = true;
-
-            label2.Text = "";
-            label3.Text = "";
-
-            button1.Visible = false;
-            button1.Enabled = false;
-
-            panel1.BackgroundImage = intro;
+            toIntro();
         }
 
 
@@ -551,19 +539,12 @@ namespace SnapshotsOfLifeEx01
 
                 }
 
+               
+
                 this.DialogResult = DialogResult.OK;
                 pictures.Clear();
-                _controller.EndEvf();
 
-                takePictureButton.Visible = true;
-                takePictureButton.Enabled = true;
-                actionButton5.Visible = true; 
-                actionButton5.Enabled = true;
-
-                label2.Text = " ";
-                label3.Text = " ";
-
-                panel1.BackgroundImage = intro;
+                toIntro();
 
             }
             else
@@ -653,6 +634,24 @@ namespace SnapshotsOfLifeEx01
                     Console.WriteLine("파일 삭제 오류 발생 : " + ex.Message);
                 }
             }
+        }
+
+        private void toIntro()
+        {
+            _controller.EndEvf();
+            evfPictureBox1.Visible = false;
+
+            takePictureButton.Visible = true;
+            takePictureButton.Enabled = true;
+            actionButton5.Visible = true;
+            actionButton5.Enabled = true;
+            button1.Visible = false;
+            button1.Enabled = false;
+
+            label2.Text = " ";
+            label3.Text = " ";
+
+            panel1.BackgroundImage = intro;
         }
 
         
