@@ -29,14 +29,15 @@ namespace SnapshotsOfLifeEx01
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1 = new DoubleBufferPanel();
+            this.actionButton5 = new SnapshotsOfLifeEx01.ActionButton();
+            this.takePictureButton = new SnapshotsOfLifeEx01.ActionButton();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.actionButton5 = new SnapshotsOfLifeEx01.ActionButton();
-            this.takePictureButton = new SnapshotsOfLifeEx01.ActionButton();
             this.evfPictureBox1 = new SnapshotsOfLifeEx01.EvfPictureBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.evfPictureBox1)).BeginInit();
@@ -46,6 +47,7 @@ namespace SnapshotsOfLifeEx01
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.actionButton5);
             this.panel1.Controls.Add(this.takePictureButton);
             this.panel1.Controls.Add(this.label2);
@@ -58,6 +60,44 @@ namespace SnapshotsOfLifeEx01
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1080, 1920);
             this.panel1.TabIndex = 16;
+            // 
+            // actionButton5
+            // 
+            this.actionButton5.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.actionButton5.BackColor = System.Drawing.Color.Transparent;
+            this.actionButton5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.actionButton5.Command = SnapshotsOfLifeEx01.ActionEvent.Command.NONE;
+            this.actionButton5.FlatAppearance.BorderSize = 0;
+            this.actionButton5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.actionButton5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.actionButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.actionButton5.Location = new System.Drawing.Point(449, 1686);
+            this.actionButton5.Name = "actionButton5";
+            this.actionButton5.Size = new System.Drawing.Size(168, 70);
+            this.actionButton5.TabIndex = 8;
+            this.actionButton5.UseVisualStyleBackColor = false;
+            this.actionButton5.Click += new System.EventHandler(this.startButton_Click);
+            this.actionButton5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.actionButton5_MouseDown);
+            this.actionButton5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.actionButton5_MouseUp);
+            // 
+            // takePictureButton
+            // 
+            this.takePictureButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.takePictureButton.BackColor = System.Drawing.Color.Transparent;
+            this.takePictureButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.takePictureButton.Command = SnapshotsOfLifeEx01.ActionEvent.Command.NONE;
+            this.takePictureButton.FlatAppearance.BorderSize = 0;
+            this.takePictureButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.takePictureButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.takePictureButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.takePictureButton.Location = new System.Drawing.Point(449, 1686);
+            this.takePictureButton.Name = "takePictureButton";
+            this.takePictureButton.Size = new System.Drawing.Size(168, 70);
+            this.takePictureButton.TabIndex = 7;
+            this.takePictureButton.UseVisualStyleBackColor = false;
+            this.takePictureButton.Click += new System.EventHandler(this.takePictureButton_Click);
+            this.takePictureButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.takePictureButton_MouseDown);
+            this.takePictureButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.takePictureButton_MouseUp);
             // 
             // label2
             // 
@@ -113,44 +153,6 @@ namespace SnapshotsOfLifeEx01
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // actionButton5
-            // 
-            this.actionButton5.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.actionButton5.BackColor = System.Drawing.Color.Transparent;
-            this.actionButton5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.actionButton5.Command = SnapshotsOfLifeEx01.ActionEvent.Command.NONE;
-            this.actionButton5.FlatAppearance.BorderSize = 0;
-            this.actionButton5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.actionButton5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.actionButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.actionButton5.Location = new System.Drawing.Point(449, 1686);
-            this.actionButton5.Name = "actionButton5";
-            this.actionButton5.Size = new System.Drawing.Size(168, 70);
-            this.actionButton5.TabIndex = 8;
-            this.actionButton5.UseVisualStyleBackColor = false;
-            this.actionButton5.Click += new System.EventHandler(this.startButton_Click);
-            this.actionButton5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.actionButton5_MouseDown);
-            this.actionButton5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.actionButton5_MouseUp);
-            // 
-            // takePictureButton
-            // 
-            this.takePictureButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.takePictureButton.BackColor = System.Drawing.Color.Transparent;
-            this.takePictureButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.takePictureButton.Command = SnapshotsOfLifeEx01.ActionEvent.Command.NONE;
-            this.takePictureButton.FlatAppearance.BorderSize = 0;
-            this.takePictureButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.takePictureButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.takePictureButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.takePictureButton.Location = new System.Drawing.Point(449, 1686);
-            this.takePictureButton.Name = "takePictureButton";
-            this.takePictureButton.Size = new System.Drawing.Size(168, 70);
-            this.takePictureButton.TabIndex = 7;
-            this.takePictureButton.UseVisualStyleBackColor = false;
-            this.takePictureButton.Click += new System.EventHandler(this.takePictureButton_Click);
-            this.takePictureButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.takePictureButton_MouseDown);
-            this.takePictureButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.takePictureButton_MouseUp);
-            // 
             // evfPictureBox1
             // 
             this.evfPictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -163,6 +165,23 @@ namespace SnapshotsOfLifeEx01
             this.evfPictureBox1.TabIndex = 10;
             this.evfPictureBox1.TabStop = false;
             this.evfPictureBox1.Click += new System.EventHandler(this.evfPictureBox1_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(56, 86);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(142, 75);
+            this.button1.TabIndex = 16;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
+            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
             // 
             // MainWindow
             // 
@@ -193,7 +212,8 @@ namespace SnapshotsOfLifeEx01
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Panel panel1;
+        private DoubleBufferPanel panel1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

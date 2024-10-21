@@ -113,6 +113,9 @@
     <Compile Include="Property\ActionButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Property\DoubleBufferPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Property\EvfPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>

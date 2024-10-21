@@ -29,7 +29,7 @@ namespace SnapshotsOfLifeEx01
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1 = new DoubleBufferPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -74,7 +74,7 @@ namespace SnapshotsOfLifeEx01
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private DoubleBufferPanel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

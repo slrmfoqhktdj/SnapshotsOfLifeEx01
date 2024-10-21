@@ -30,7 +30,7 @@ namespace SnapshotsOfLifeEx01
         private void InitializeComponent()
         {
             this.allCancle = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1 = new DoubleBufferPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.next = new System.Windows.Forms.Button();
@@ -242,7 +242,7 @@ namespace SnapshotsOfLifeEx01
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.Button next;
         private System.Windows.Forms.Button allCancle;
-        private System.Windows.Forms.Panel panel1;
+        private DoubleBufferPanel panel1;
         private System.Windows.Forms.Label label1;
     }
 }

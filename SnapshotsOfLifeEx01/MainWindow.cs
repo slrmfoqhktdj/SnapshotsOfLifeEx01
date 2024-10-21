@@ -35,6 +35,8 @@ namespace SnapshotsOfLifeEx01
         private Image start_down_btn = Image.FromFile("./ui/startbutton_down.png");
         private Image picture_up_btn = Image.FromFile("./ui/picturebutton_up.png");
         private Image picture_down_btn = Image.FromFile("./ui/picturebutton_down.png");
+        private Image back_up_btn = Image.FromFile("./ui/back_arrow_up.png");
+        private Image back_down_btn = Image.FromFile("./ui/back_arrow_down.png");
 
         private Image[] flash_pictures = { Image.FromFile("./ui/flash01.png") , Image.FromFile("./ui/flash02.png"), Image.FromFile("./ui/flash03.png"), Image.FromFile("./ui/flash04.png"), Image.FromFile("./ui/flash05.png"),
                                             Image.FromFile("./ui/flash06.png") ,Image.FromFile("./ui/flash07.png") ,Image.FromFile("./ui/flash08.png") ,Image.FromFile("./ui/flash09.png") ,};
@@ -58,10 +60,10 @@ namespace SnapshotsOfLifeEx01
             InitializeComponent();
 
             // 화면 및 픽쳐박스 버벅임 줄이기
-            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            /*SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            UpdateStyles();
+            UpdateStyles();*/
 
 
             _controller = controller;
@@ -85,6 +87,7 @@ namespace SnapshotsOfLifeEx01
             _observerList.ForEach(observer => _controller.GetModel().Add(ref observer));
 
             evfPictureBox1.SetActionSource(ref _actionSource);
+            evfPictureBox1.Visible = false;
 
             takePictureButton.SetActionSource(ref _actionSource);
             /*takePictureButton.Command = ActionEvent.Command.TAKE_PICTURE;*/
@@ -138,6 +141,9 @@ namespace SnapshotsOfLifeEx01
             panel1.BackgroundImage = intro;
             actionButton5.BackgroundImage = start_up_btn;
             takePictureButton.BackgroundImage = picture_up_btn;
+            button1.BackgroundImage = back_up_btn;
+            button1.Enabled = false;
+            button1.Visible = false;
 
             /* evfPictureBox1.Image = Properties.Resources.intro;*/
 
@@ -218,9 +224,24 @@ namespace SnapshotsOfLifeEx01
 
         }
 
-      
 
-       
+        private void button1_Click(object sender, EventArgs e)
+        {
+            _controller.EndEvf();
+            evfPictureBox1.Visible = false;
+
+            actionButton5.Visible = true;
+            actionButton5.Enabled = true;
+
+            label2.Text = "";
+            label3.Text = "";
+
+            button1.Visible = false;
+            button1.Enabled = false;
+
+            panel1.BackgroundImage = intro;
+        }
+
 
         private void takePictureButton_Click(object sender, EventArgs e)
         {
@@ -228,6 +249,8 @@ namespace SnapshotsOfLifeEx01
 
             takePictureButton.Visible = false;
             takePictureButton.Enabled = false;
+            button1.Visible = false;
+            button1.Enabled = false;
             t.Start();
            
 
@@ -245,6 +268,8 @@ namespace SnapshotsOfLifeEx01
         private void startButton_Click(object sender, EventArgs e)
         {
 
+            evfPictureBox1.Visible = true;
+
             PicturesDelete();
 
             panel1.BackgroundImage = bg;
@@ -253,6 +278,9 @@ namespace SnapshotsOfLifeEx01
 
             label2.Text = "0";
             label3.Text = "/8";
+
+            button1.Visible = true;
+            button1.Enabled = true;
 
             /*SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
 
@@ -659,6 +687,13 @@ namespace SnapshotsOfLifeEx01
             takePictureButton.BackgroundImage = picture_up_btn;
         }
 
-       
+        private void button1_MouseDown(object sender, MouseEventArgs e)
+        {
+            button1.BackgroundImage = back_down_btn;
+        }
+        private void button1_MouseUp(object sender, MouseEventArgs e)
+        {
+            button1.BackgroundImage = back_up_btn;
+        }
     }
 }
