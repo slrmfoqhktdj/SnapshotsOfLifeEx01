@@ -29,17 +29,18 @@ namespace SnapshotsOfLifeEx01
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new DoubleBufferPanel();
+            this.panel1 = new SnapshotsOfLifeEx01.DoubleBufferPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.actionButton5 = new SnapshotsOfLifeEx01.ActionButton();
             this.takePictureButton = new SnapshotsOfLifeEx01.ActionButton();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.evfPictureBox1 = new SnapshotsOfLifeEx01.EvfPictureBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.evfPictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,19 +48,60 @@ namespace SnapshotsOfLifeEx01
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.pictureBox2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.actionButton5);
             this.panel1.Controls.Add(this.takePictureButton);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.evfPictureBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1080, 1920);
             this.panel1.TabIndex = 16;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Location = new System.Drawing.Point(33, 535);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1015, 695);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 15;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.Location = new System.Drawing.Point(33, 535);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(1015, 695);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 17;
+            this.pictureBox2.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(56, 40);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(110, 75);
+            this.button1.TabIndex = 16;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
+            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
             // 
             // actionButton5
             // 
@@ -71,6 +113,7 @@ namespace SnapshotsOfLifeEx01
             this.actionButton5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.actionButton5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.actionButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.actionButton5.ForeColor = System.Drawing.Color.Transparent;
             this.actionButton5.Location = new System.Drawing.Point(449, 1686);
             this.actionButton5.Name = "actionButton5";
             this.actionButton5.Size = new System.Drawing.Size(168, 70);
@@ -127,61 +170,20 @@ namespace SnapshotsOfLifeEx01
             this.label3.Text = "/8";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label1.Font = new System.Drawing.Font("문체부 제목 돋음체", 100F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.SystemColors.Window;
-            this.label1.Location = new System.Drawing.Point(33, 540);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1014, 685);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "1";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Location = new System.Drawing.Point(33, 540);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1014, 685);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 15;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // evfPictureBox1
             // 
             this.evfPictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.evfPictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.evfPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.evfPictureBox1.Location = new System.Drawing.Point(33, 540);
+            this.evfPictureBox1.backimg = null;
+            this.evfPictureBox1.Location = new System.Drawing.Point(33, 535);
             this.evfPictureBox1.Name = "evfPictureBox1";
-            this.evfPictureBox1.Size = new System.Drawing.Size(1014, 685);
+            this.evfPictureBox1.selected_ThemaType = false;
+            this.evfPictureBox1.Size = new System.Drawing.Size(1015, 695);
             this.evfPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.evfPictureBox1.TabIndex = 10;
             this.evfPictureBox1.TabStop = false;
             this.evfPictureBox1.Click += new System.EventHandler(this.evfPictureBox1_Click);
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(56, 86);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(142, 75);
-            this.button1.TabIndex = 16;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
-            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
             // 
             // MainWindow
             // 
@@ -198,6 +200,7 @@ namespace SnapshotsOfLifeEx01
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.evfPictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -208,12 +211,12 @@ namespace SnapshotsOfLifeEx01
         private EvfPictureBox evfPictureBox1;
         private ActionButton actionButton5;
         private ActionButton takePictureButton;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
         private DoubleBufferPanel panel1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 

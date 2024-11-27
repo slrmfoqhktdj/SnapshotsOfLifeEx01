@@ -14,24 +14,25 @@ namespace SnapshotsOfLifeEx01
     public partial class PreViewWindow : Form
     {
 
-        private string previewPath = "";
+        private string printImagePath = "";
         private Timer t = new Timer();  // 창 유지 타이머
         private int timer_time; // 현재 카운트 타이머 시간
         private int timer_time_limit = 5;  // 카운트 타이머 초 수
 
         private Image bg = Image.FromFile("./ui/background.png");
 
-        public PreViewWindow(string previewPath)
+        public PreViewWindow(string printImagePath, Image previewImage)
         {
             InitializeComponent();
 
-            this.previewPath = previewPath;
+            this.printImagePath = printImagePath;
 
-            Image img1 = Image.FromFile(this.previewPath);
+           
 
-            /*pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;*/
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.Image = previewImage;
 
-            pictureBox1.Image = img1;
+            previewImage.Dispose();
 
             panel1.BackgroundImage = bg;
 
@@ -68,8 +69,9 @@ namespace SnapshotsOfLifeEx01
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             // 이미지 로드
-            Image image = Image.FromFile(this.previewPath);
+            Image image = Image.FromFile(this.printImagePath);
 
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             // 이미지 크기 조정 (옵션)
             e.Graphics.DrawImage(image, e.PageBounds);
 

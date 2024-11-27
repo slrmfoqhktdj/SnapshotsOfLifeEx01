@@ -11,5 +11,21 @@ namespace SnapshotsOfLifeEx01
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             UpdateStyles();
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // DoubleBufferPanel
+            // 
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.DoubleBufferPanel_Paint);
+            this.ResumeLayout(false);
+
+        }
+
+        private void DoubleBufferPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

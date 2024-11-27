@@ -22,12 +22,19 @@ namespace SnapshotsOfLifeEx01
         private int TakePicture = 8;  //사진찍는 횟수
         private Timer t = new Timer();  // 카운트 타이머
         private int timer_time; // 현재 카운트 타이머 시간
-        private int timer_time_limit = 5;  // 카운트 타이머 초 수
+        private int timer_time_limit = 6;  // 카운트 타이머 초 수 - 0 포함
         private Timer s_t = new Timer();  // 셔터 타이머
         private int shutter_animation_interval = 10;
         private List<IObserver> _observerList = new List<IObserver>();
 
+        private List<Image> _frame_bg_list = new List<Image>(); // 테마 자른 이미지 리스트
+        private PictureData pictureData = new PictureData();    // 사진 규격 데이터
+
+        private int Image_Width = 520;
+        private int Image_Height = 380;
+
         private string folderPath = "./pictures";
+        private string uiPath = "./ui";
 
         private Image intro = Image.FromFile("./ui/intro.png");
         private Image bg = Image.FromFile("./ui/main.png");
@@ -40,6 +47,9 @@ namespace SnapshotsOfLifeEx01
 
         private Image[] flash_pictures = { Image.FromFile("./ui/flash01.png") , Image.FromFile("./ui/flash02.png"), Image.FromFile("./ui/flash03.png"), Image.FromFile("./ui/flash04.png"), Image.FromFile("./ui/flash05.png"),
                                             Image.FromFile("./ui/flash06.png") ,Image.FromFile("./ui/flash07.png") ,Image.FromFile("./ui/flash08.png") ,Image.FromFile("./ui/flash09.png") ,};
+
+        private Image[] flash_count_pictures = { Image.FromFile("./ui/count_0.png"), Image.FromFile("./ui/count_1.png"), Image.FromFile("./ui/count_2.png"), Image.FromFile("./ui/count_3.png"), Image.FromFile("./ui/count_4.png"), Image.FromFile("./ui/count_5.png") };
+
         private int flash_pictures_count = 0;
 
        /* private Image picture_animation;*/
@@ -47,8 +57,10 @@ namespace SnapshotsOfLifeEx01
         private long maxSizeByte = 1024 * 1024 * 500; // 최고 용량 (500MB)
         private int deleteFilesCount = 9;   // 용량 초과시 지울 파일 개수
 
+        private Image selected_frame;   // 선택된 테마 이미지
+        private string selected_frame_name;   // 선택된 테마 이름
 
-
+        private bool themaType = false;    // 순서가 정해진 테마인지 아닌지  false: 안정해진 테마, true : 정해진 테마
 
         public MainWindow(ref CameraController controller)
         {
@@ -115,10 +127,10 @@ namespace SnapshotsOfLifeEx01
             /*evfPictureBox1.Parent = panel1;*/
             /*evfPictureBox1.BackColor = Color.Transparent;*/
 
-            label1.Parent = pictureBox1;
-           /* label1.BackColor = Color.Transparent;*/
-            label1.Location = new Point((pictureBox1.Width / 2) - (label1.Width / 2), (pictureBox1.Height / 2) - (label1.Height / 2));
-            label1.Text = " ";
+            pictureBox2.Parent = pictureBox1;
+            /* label1.BackColor = Color.Transparent;*/
+            pictureBox2.Location = new Point((pictureBox1.Width / 2) - (pictureBox2.Width / 2), (pictureBox1.Height / 2) - (pictureBox2.Height / 2));
+            pictureBox2.Image = null;
 
             label2.Parent = panel1;
             /*label2.BackColor = Color.Transparent;*/
@@ -166,62 +178,6 @@ namespace SnapshotsOfLifeEx01
                 _actionSource.FireEvent(ActionEvent.Command.REMOTESHOOTING_START, IntPtr.Zero);
             }
 
-
-
-
-
-
-
-
-
-
-
-
-            
-
-
-
-
-
-
-            // 예제
-            /* ChoiceWindow cw = new ChoiceWindow(new List<string>() { "./pictures/20241008140422764.jpg", "./pictures/20241008140422764.jpg", "./pictures/20241008140422764.jpg", "./pictures/20241008140422764.jpg", "./pictures/20241008140422764.jpg", "./pictures/20241008140422764.jpg", "./pictures/20241008140422764.jpg", "./pictures/20241008140422764.jpg" }, folderPath);
-             *//* cw.Owner = this;*//*
-             if (this.InvokeRequired)
-             {
-                 this.Invoke(new MethodInvoker(delegate { cw.ShowDialog(); }));
-             }
-             else
-             {
-                 cw.ShowDialog();
-
-             }*/
-            // 예제
-          /*  PreViewWindow pw = new PreViewWindow("./pictures/Com_20241011155802965.jpg");
-            pw.Owner = this;
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new MethodInvoker(delegate { pw.ShowDialog(); }));
-            }
-            else
-            {
-                try
-                {
-                    pw.ShowDialog();
-                }
-                catch (Exception e1)
-                {
-                    Console.WriteLine(e1);
-                }
-
-
-            }*/
-
-
-
-
-
-
         }
 
 
@@ -255,6 +211,57 @@ namespace SnapshotsOfLifeEx01
 
         private void startButton_Click(object sender, EventArgs e)
         {
+
+            
+            FrameWindow cw = new FrameWindow();
+            /* cw.Owner = this;*/
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(delegate { cw.ShowDialog(); }));
+            }
+            else
+            {
+                cw.ShowDialog();
+
+            }
+
+            
+            selected_frame_name = cw.selected_picture_name;
+
+
+            cw.Dispose();
+            
+            GC.Collect();
+
+            if( selected_frame_name == null)
+            {
+                return;
+            }
+
+            selected_frame = Image.FromFile( selected_frame_name);
+
+            themaType = pictureData.ThemaType(selected_frame_name);
+
+            if(themaType)
+            {
+                _frame_bg_list.Clear(); //초기화
+
+                _frame_bg_list.Add(pictureData.ImageCut(selected_frame, 0, pictureData.GetFrameFirstDistance() - pictureData.GetFramePictureHeightDistanceUpper(), selected_frame.Width, (int)(pictureData.GetFramePictureHeight() + (pictureData.GetFramePictureHeightDistance()))));
+                _frame_bg_list.Add(pictureData.ImageCut(selected_frame, 0, pictureData.GetFrameFirstDistance() + pictureData.GetFramePictureHeight() - pictureData.GetFramePictureHeightDistanceUpper() + pictureData.GetFramePictureHeightDistance(), selected_frame.Width, (int)(pictureData.GetFramePictureHeight() + (pictureData.GetFramePictureHeightDistance()))));
+                _frame_bg_list.Add(pictureData.ImageCut(selected_frame, 0, pictureData.GetFrameFirstDistance() + (pictureData.GetFramePictureHeight() * 2) + pictureData.GetFramePictureHeightDistanceUpper() + pictureData.GetFramePictureHeightDistance(), selected_frame.Width, (int)(pictureData.GetFramePictureHeight() + (pictureData.GetFramePictureHeightDistance()))));
+                _frame_bg_list.Add(pictureData.ImageCut(selected_frame, 0, pictureData.GetFrameFirstDistance() + (pictureData.GetFramePictureHeight() * 3) + pictureData.GetFramePictureHeightDistanceUpper() + (pictureData.GetFramePictureHeightDistance() * 2), selected_frame.Width, (int)(pictureData.GetFramePictureHeight() + (pictureData.GetFramePictureHeightDistance()))));
+
+
+                evfPictureBox1.backimg = _frame_bg_list[0];
+
+                evfPictureBox1.selected_ThemaType = true;
+            }
+            else
+            {
+                evfPictureBox1.selected_ThemaType = false;
+            }
+
+            
 
             evfPictureBox1.Visible = true;
 
@@ -394,88 +401,7 @@ namespace SnapshotsOfLifeEx01
             _actionListenerList.ForEach(actionListener => _actionSource.RemoveActionListener(ref actionListener));
         }
 
-        
 
-        /*private Bitmap ModifyImage(Bitmap original, int width, int height, float dpi)
-        {
-            // 해상도와 크기 변경
-            Bitmap newBitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
-
-            using (Graphics g = Graphics.FromImage(newBitmap))
-            {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.DrawImage(original, 0, 0, width, height);
-            }
-
-            *//*// 해상도 설정
-            newBitmap.SetResolution(dpi, dpi);*//*
-
-
-
-            // 비트 깊이 변경 (예: 32비트에서 8비트로 변환)
-           *//* return ConvertTo8Bit(newBitmap);*//*
-            return newBitmap;
-        }*/
-
-        private Bitmap CropAndResizeBitmap(Bitmap sourceBitmap, int targetWidth, int targetHeight)
-        {
-            double targetAspectRatio = (double)targetWidth / targetHeight;
-            double sourceAspectRatio = (double)sourceBitmap.Width / sourceBitmap.Height;
-
-            Rectangle cropArea;
-
-            // 비율에 맞게 잘라낼 영역 계산
-            if (sourceAspectRatio > targetAspectRatio)
-            {
-                // 원본 이미지가 더 넓은 경우
-                int newWidth = (int)(sourceBitmap.Height * targetAspectRatio);
-                int x = (sourceBitmap.Width - newWidth) / 2; // 중앙 정렬
-                cropArea = new Rectangle(x, 0, newWidth, sourceBitmap.Height);
-            }
-            else
-            {
-                // 원본 이미지가 더 높은 경우
-                int newHeight = (int)(sourceBitmap.Width / targetAspectRatio);
-                int y = (sourceBitmap.Height - newHeight) / 2; // 중앙 정렬
-                cropArea = new Rectangle(0, y, sourceBitmap.Width, newHeight);
-            }
-
-            // 잘라낸 비트맵 생성
-            Bitmap croppedBitmap = new Bitmap(targetWidth, targetHeight);
-            using (Graphics g = Graphics.FromImage(croppedBitmap))
-            {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.DrawImage(sourceBitmap, new Rectangle(0, 0, targetWidth, targetHeight), cropArea, GraphicsUnit.Pixel);
-            }
-
-            return croppedBitmap;
-        }
-
-        /*private Bitmap ConvertTo8Bit(Bitmap original)
-        {
-            Bitmap newBitmap = new Bitmap(original.Width, original.Height, PixelFormat.Format24bppRgb);
-
-            // 색상 팔레트를 설정
-            ColorPalette palette = newBitmap.Palette;
-            for (int i = 0; i < 256; i++)
-            {
-                palette.Entries[i] = Color.FromArgb(i, i, i); // 그레이스케일 팔레트
-            }
-            newBitmap.Palette = palette;
-
-            // 픽셀 변경
-            for (int x = 0; x < original.Width; x++)
-            {
-                for (int y = 0; y < original.Height; y++)
-                {
-                    Color pixelColor = original.GetPixel(x, y);
-                    int grayValue = (int)(pixelColor.R * 0.3 + pixelColor.G * 0.59 + pixelColor.B * 0.11); // 그레이스케일 변환
-                    newBitmap.SetPixel(x, y, Color.FromArgb(grayValue, grayValue, grayValue));
-                }
-            }
-
-            return newBitmap;
-        }*/
 
         private void timer_Event(object sender, System.EventArgs e)
         {
@@ -485,7 +411,7 @@ namespace SnapshotsOfLifeEx01
                 s_t.Start();
 
                 timer_time = timer_time_limit;
-                label1.Text = " ";
+                pictureBox2.Image = null;
                 t.Stop();
                 picture_downHandler();
 
@@ -497,7 +423,8 @@ namespace SnapshotsOfLifeEx01
 
 
             
-            label1.Text = timer_time.ToString();
+            
+            pictureBox2.Image = flash_count_pictures[timer_time-1];
             timer_time--;
             
         }
@@ -512,7 +439,7 @@ namespace SnapshotsOfLifeEx01
 
             // 사이즈 변환가능
             /*Bitmap bitmap = ModifyImage((Bitmap)evfPictureBox1.Image, 520, 380, 72f);*/
-            using (Bitmap bitmap = CropAndResizeBitmap((Bitmap)evfPictureBox1.Image,520,380))
+            using (Bitmap bitmap = pictureData.CropAndResizeBitmap((Bitmap)evfPictureBox1.Image,Image_Width+ (pictureData.GetPictureWidthDistance()*2),Image_Height+ pictureData.GetPictureHeightDistance()))
             {
                 bitmap.Save(fileName, ImageFormat.Jpeg);
                 
@@ -527,7 +454,7 @@ namespace SnapshotsOfLifeEx01
             
             if (pictures.Count == TakePicture)
             {
-                ChoiceWindow cw = new ChoiceWindow(pictures, folderPath);
+                ChoiceWindow cw = new ChoiceWindow(pictures, folderPath , selected_frame, selected_frame_name);
                 /* cw.Owner = this;*/
                 if (this.InvokeRequired)
                 {
@@ -544,17 +471,31 @@ namespace SnapshotsOfLifeEx01
                 this.DialogResult = DialogResult.OK;
                 pictures.Clear();
 
+                
+
                 toIntro();
 
+                cw.Dispose();
             }
             else
             {
+                if (themaType)
+                {
+                    evfPictureBox1.backimg = _frame_bg_list[(int)System.Math.Truncate((double)pictures.Count / 2)];
+                }
                 t.Start();
             }
 
 
+            GC.Collect();
+
+
 
         }
+
+
+        
+
 
         private void inShutter()
         {
@@ -693,6 +634,11 @@ namespace SnapshotsOfLifeEx01
         private void button1_MouseUp(object sender, MouseEventArgs e)
         {
             button1.BackgroundImage = back_up_btn;
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

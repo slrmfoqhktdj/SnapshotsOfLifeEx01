@@ -90,6 +90,12 @@
     <Compile Include="Command\TakePictureCommand.cs" />
     <Compile Include="EDSDK.cs" />
     <Compile Include="Command\GetPropertyDescCommand.cs" />
+    <Compile Include="FrameWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrameWindow.Designer.cs">
+      <DependentUpon>FrameWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,7 @@
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Observer.cs" />
+    <Compile Include="PictureData.cs" />
     <Compile Include="PreViewWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +129,9 @@
     <EmbeddedResource Include="ChoiceWindow.resx">
       <DependentUpon>ChoiceWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrameWindow.resx">
+      <DependentUpon>FrameWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -132,6 +142,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Property\DoubleBufferPanel.resx">
+      <DependentUpon>DoubleBufferPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

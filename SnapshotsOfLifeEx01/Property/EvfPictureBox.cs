@@ -15,6 +15,7 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Drawing.Drawing2D;
 
 namespace SnapshotsOfLifeEx01
 {
@@ -34,13 +35,16 @@ namespace SnapshotsOfLifeEx01
 
         private ActionSource _actionSource;
 
-        /*private Image _backimg = Properties.Resources.back1;*/
-
         /*private Image[] _backimg_list = { Properties.Resources.back1 , Properties.Resources.back2, Properties.Resources.back3, Properties.Resources.back4, Properties.Resources.back5, Properties.Resources.back6, Properties.Resources.back7, Properties.Resources.back8};*/
         public void SetActionSource(ref ActionSource actionSource) { _actionSource = actionSource; }
 
         private int _backimg_cnt = 0;
 
+        private PictureData pictureData = new PictureData();
+
+        public bool selected_ThemaType { get; set; }    // 순서가 정해진 테마인지 아닌지  false: 안정해진 테마, true : 정해진 테마
+
+        public Image backimg { get; set; }  // 테마 이미지
 
         public EvfPictureBox()
         {
@@ -167,11 +171,32 @@ namespace SnapshotsOfLifeEx01
 
             Graphics g = Graphics.FromImage(canvas);
 
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.PixelOffsetMode = PixelOffsetMode.Half;
+
+
             
-            g.DrawImage(img, 0, 0);
+
+            // 인물과 캐릭터가 있을 경우
+
+            if (selected_ThemaType)
+            {
+                g.DrawImage(img, pictureData.GetPictureWidthDistance(), pictureData.GetPictureHeightDistance() / 2, img.Width - (pictureData.GetPictureWidthDistance() * 2), img.Height - pictureData.GetPictureHeightDistance());
+                g.DrawImage(backimg, 0, 0, iWidth, iHeight);
+            }
+            // 없을경우 
+            else
+            {
+                g.DrawImage(img, 0, 0);
+            }
+            
+
+           
+
+
 
             //when aspect ratio is 1:1 or 4:3
-            if((_model.Aspect == 1) || (_model.Aspect == 2))
+            if ((_model.Aspect == 1) || (_model.Aspect == 2))
             {
                 float hvRatio = (float)vRect.width / vRect.height;
                 int rWidth =  (int)(iWidth - iHeight * hvRatio) / 2;
@@ -378,6 +403,8 @@ namespace SnapshotsOfLifeEx01
 
             return result;
         }*/
+
+      
     }
 }
 
